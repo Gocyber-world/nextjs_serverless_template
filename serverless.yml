@@ -36,5 +36,5 @@ inputs:
         environment: release
         endpoints:
           - path: /serverless/fe/template
-            method: get
+            method: GET
 
