@@ -19,6 +19,10 @@ inputs:
         imageType: ${env:IMAGE_TYPE} # 镜像类型：personal - 个人，enterprise - 企业版，public - 镜像模板
         imageUrl: ${env:IMAGE_URL_PREFIX}/gocyber-fe/dashboard:${env:DOCKER_IMAGE_TAG} # DOCKER_IMAGE_TAG是由githubAction传进来的
 
+  vpcConfig: # 私有网络配置
+    vpcId: ${env:VPC_ID} # 私有网络的Id
+    subnetId: ${env:SUBNET_ID} # 子网ID
+
   triggers:
     - type: apigw   # api网关配置
       parameters:
