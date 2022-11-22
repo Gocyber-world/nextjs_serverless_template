@@ -1,40 +1,43 @@
-app: template
-name: nextjs # (必选) 组件实例名称。
-component: multi-scf
+app: goc
+# 参考：https://github.com/serverless-components/tencent-scf/blob/master/docs/configure.md
+component: scf # (必选) 组件名称，在该实例中为scf
+name: nestjs # (必选) 组件实例名称。
 
+#组件参数配置
 inputs:
-  name: ${name}-serverless-${app} # 云函数名称，默认为 ${name}-${stage}-${app} ,也可以直接写死
-  region: ${env:REGION} # 云函数所在区域
-  namespace: gocyber-fe # 命名空间
-  type: web # 函数类型
-  timeout: 59
-  isAutoPublish: true # 是否每次部署时，自动发布函数版本
-  publishDescription: nextjs_serverless_template # 发布版本描述
+  name: ${name}-serverless-${template} # 云函数名称，默认为 ${name}-${stage}-${app}
+  namespace: gocyber-fe
+  # role: exRole # 云函数执行角色
+  type: web # 函数类型，默认为 event(事件类型)，web(web类型)
+  region: ${env:REGION} # 函数所在区域
+  description: gocyber-fe dab.
 
-  functions:
-    user-detail:
-      type: web
-      image: # 镜像配置
-        registryId: ${env:REGISTRY_ID} # 容器镜像服务名称，企业版必须
-        imageType: ${env:IMAGE_TYPE} # 镜像类型：personal - 个人，enterprise - 企业版，public - 镜像模板
-        imageUrl: ${env:IMAGE_URL_PREFIX}/gocyber-fe/dashboard:${env:DOCKER_IMAGE_TAG} # DOCKER_IMAGE_TAG是由githubAction传进来的
+  memorySize: ${env:MEMORY_SIZE} # 分配内存 MB
+  initTimeout: 90 # 初始化超时时间，单位秒
+  timeout: 90 # 函数执行超时时间
+
+  image: # 镜像配置
+    registryId: ${env:REGISTRY_ID} # 容器镜像服务名称，企业版必须
+    imageType: ${env:IMAGE_TYPE} # 镜像类型：personal - 个人，enterprise - 企业版，public - 镜像模板
+    imageUrl: ${env:IMAGE_URL_PREFIX}/gocyber-fe/dashboard:${env:DOCKER_IMAGE_TAG}
 
   vpcConfig: # 私有网络配置
     vpcId: ${env:VPC_ID} # 私有网络的Id
     subnetId: ${env:SUBNET_ID} # 子网ID
+  # ignoreTriggers: true # 忽略配置文件中的触发器配置
+  events: # 触发器
+    - apigw: # api网关触发器，已有apigw服务，配置触发器
+        parameters:
+          serviceName: ${env:API_GW_NAME}
+          serviceId: ${env:API_GW_ID}
+          protocols:
+            - http
+            - https
+          netTypes:
+            - OUTER
+          environment: release
+          endpoints:
+            - path: /serverless/fe/template
+              method: GET
 
-  triggers:
-    - type: apigw   # api网关配置
-      parameters:
-        serviceName: ${env:API_GW_NAME}
-        serviceId: ${env:API_GW_ID}
-        protocols:
-          - http
-          - https
-        netTypes:
-          - OUTER
-        environment: release
-        endpoints:
-          - path: /serverless/fe/template
-            method: GET
 
