@@ -1,11 +1,11 @@
 app: goc
 # 参考：https://github.com/serverless-components/tencent-scf/blob/master/docs/configure.md
-component: scf # (必选) 组件名称，在该实例中为scf
+component: template # (必选) 组件名称，在该实例中为scf
 name: nestjs # (必选) 组件实例名称。
 
 #组件参数配置
 inputs:
-  name: ${name}-serverless-${template} # 云函数名称，默认为 ${name}-${stage}-${app}
+  name: ${name}-serverless-${component} # 云函数名称，默认为 ${name}-${stage}-${app}
   namespace: gocyber-fe
   # role: exRole # 云函数执行角色
   type: web # 函数类型，默认为 event(事件类型)，web(web类型)
