@@ -22,12 +22,12 @@ export default function Home() {
 
                 <div className={styles.grid}>
                     <a href="https://nextjs.org/docs" className={styles.card}>
-                        <h2>这是测试 &rarr;</h2>
+                        <h2>这是测试1 &rarr;</h2>
                         <p>Find in-depth information about Next.js features and API.</p>
                     </a>
 
                     <a href="https://nextjs.org/learn" className={styles.card}>
-                        <h2>这是测试 &rarr;</h2>
+                        <h2>这是测试1 &rarr;</h2>
                         <p>Learn about Next.js in an interactive course with quizzes!</p>
                     </a>
 
